@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -35,13 +35,31 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.jetbrains.compose.material3.adaptive.navigation)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.navigation.compose)
+
+
+            // Design System Module
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.material3AdaptiveNavigationSuite)
+            implementation(compose.materialIconsExtended)
+            implementation(compose.ui)
+            api(libs.coil)
+            api(libs.coil.core)
+            api(libs.coil.network.ktor)
+            implementation(libs.jetbrains.compose.material3.adaptive)
+            implementation(libs.jetbrains.compose.material3.adaptive.layout)
+
+            // Koin DI
+            implementation("io.insert-koin:koin-androidx-compose:4.1.0")
+            implementation("io.insert-koin:koin-core:4.1.0")
+            implementation("io.insert-koin:koin-test:4.1.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -77,6 +95,7 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
     debugImplementation(compose.uiTooling)
 }
 
