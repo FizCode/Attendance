@@ -32,6 +32,9 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            // Network
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -41,7 +44,6 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
 
-
             // Design System Module
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -50,16 +52,22 @@ kotlin {
             implementation(compose.material3AdaptiveNavigationSuite)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
-            api(libs.coil)
-            api(libs.coil.core)
-            api(libs.coil.network.ktor)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
             implementation(libs.jetbrains.compose.material3.adaptive)
             implementation(libs.jetbrains.compose.material3.adaptive.layout)
 
             // Koin DI
-            implementation("io.insert-koin:koin-androidx-compose:4.1.0")
-            implementation("io.insert-koin:koin-core:4.1.0")
-            implementation("io.insert-koin:koin-test:4.1.0")
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.core)
+            implementation(libs.koin.test)
+
+            // Network
+            implementation(libs.ktor.client.core)
+        }
+        iosMain.dependencies {
+            // Network
+            implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -76,7 +84,7 @@ android {
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.0.1-Alpha"
     }
     packaging {
         resources {
@@ -95,7 +103,6 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.androidx.compose.bom))
     debugImplementation(compose.uiTooling)
 }
 
