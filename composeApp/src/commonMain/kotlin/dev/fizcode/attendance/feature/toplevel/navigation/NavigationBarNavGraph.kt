@@ -8,9 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import dev.fizcode.attendance.core.navigation.routes.TopLevelRoute
 import dev.fizcode.attendance.feature.dashboard.navigation.dashboardNavGraph
+import dev.fizcode.attendance_api.util.ContextFactory
 
 @Composable
 internal fun NavigationBarNavGraph(
+    platformContext: ContextFactory,
     navHostController: NavHostController,
     topLevelNavPadding: PaddingValues
 ) {
@@ -18,7 +20,10 @@ internal fun NavigationBarNavGraph(
         navController = navHostController,
         startDestination = TopLevelRoute.DashboardRoute
     ) {
-        dashboardNavGraph(topLevelNavPadding = topLevelNavPadding)
+        dashboardNavGraph(
+            platformContext = platformContext,
+            topLevelNavPadding = topLevelNavPadding
+        )
         composable<TopLevelRoute.ActivityRoute>() {
             Text("Activity Screen")
         }

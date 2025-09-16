@@ -6,10 +6,12 @@ import androidx.navigation.NavHostController
 import dev.fizcode.attendance.feature.toplevel.TopLevelDestinationItem
 import dev.fizcode.attendance.feature.toplevel.navigation.NavigationBarNavGraph
 import dev.fizcode.attendance.feature.toplevel.presentation.component.NavigationBarComponent
+import dev.fizcode.attendance_api.util.ContextFactory
 
 @Composable
 internal fun TopLevelScreen(
-    navHostController: NavHostController,
+    platformContext: ContextFactory,
+    navHostController: NavHostController
 ) {
     val items = listOf(
         TopLevelDestinationItem.Dashboard,
@@ -26,6 +28,7 @@ internal fun TopLevelScreen(
         }
     ) { innerPadding ->
         NavigationBarNavGraph(
+            platformContext = platformContext,
             navHostController = navHostController,
             topLevelNavPadding = innerPadding
         )

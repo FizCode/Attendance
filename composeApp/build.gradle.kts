@@ -44,6 +44,9 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.navigation.compose)
 
+            implementation(projects.core.attendanceApi)
+            implementation(projects.feature.attendanceBometrics)
+
             // Design System Module
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -71,6 +74,14 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+        all {
+            languageSettings {
+                optIn("kotlin.ExperimentalMultiplatform")
+            }
+        }
+        compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 }

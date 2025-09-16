@@ -37,14 +37,14 @@ internal fun ClockStatus(
 ) = Column(
     modifier = Modifier
         .fillMaxWidth()
-        .clip(RoundedCornerShape(8.dp))
+        .clip(RoundedCornerShape(16.dp))
         .background(MaterialTheme.colorScheme.secondaryContainer),
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -99,38 +99,20 @@ private fun UserClockStatus(
     clockOut: String
 ) = Row(
     modifier = Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.spacedBy(2.dp),
+    horizontalArrangement = Arrangement.spacedBy(8.dp),
     verticalAlignment = Alignment.CenterVertically
 ) {
     StatusLabel(
         text = clockIn,
         modifier = Modifier.weight(1F),
-        cornerShape = if (clockOut.isNotBlank()) {
-            RoundedCornerShape(
-                topStart = 8.dp,
-                bottomStart = 8.dp,
-                topEnd = 2.dp,
-                bottomEnd = 2.dp
-            )
-        } else {
-            RoundedCornerShape(8.dp)
-        },
+        cornerShape = RoundedCornerShape(8.dp),
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
         textColor = MaterialTheme.colorScheme.onPrimaryContainer
     )
     StatusLabel(
         text = clockOut,
         modifier = Modifier.weight(1F),
-        cornerShape = if (clockIn.isNotBlank()) {
-            RoundedCornerShape(
-                topStart = 2.dp,
-                bottomStart = 2.dp,
-                topEnd = 8.dp,
-                bottomEnd = 8.dp
-            )
-        } else {
-            RoundedCornerShape(8.dp)
-        },
+        cornerShape = RoundedCornerShape(8.dp),
         backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
         textColor = MaterialTheme.colorScheme.onTertiaryContainer
     )

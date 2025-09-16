@@ -47,7 +47,7 @@ fun LargeArticle(
     modifier: Modifier = Modifier,
     context: PlatformContext,
     imageLoader: ImageLoader,
-    cornerRadius: RoundedCornerShape = RoundedCornerShape(8.dp),
+    cornerRadius: RoundedCornerShape = RoundedCornerShape(16.dp),
     onArticleClick: () -> Unit
 ) = Column(
     modifier = modifier
@@ -123,7 +123,7 @@ fun LargeArticle(
 
 @Composable
 fun LargeArticleShimmer(
-    cornerRadius: RoundedCornerShape = RoundedCornerShape(8.dp),
+    cornerRadius: RoundedCornerShape = RoundedCornerShape(16.dp),
 ) = Column(
     modifier = Modifier.clip(cornerRadius)
         .width(280.dp)
@@ -202,7 +202,7 @@ fun MediumArticle(
     subtitle: String,
     context: PlatformContext,
     imageLoader: ImageLoader,
-    cornerRadius: RoundedCornerShape = RoundedCornerShape(8.dp),
+    cornerRadius: RoundedCornerShape = RoundedCornerShape(16.dp),
     onArticleClick: () -> Unit
 ) = Row(
     modifier = Modifier
@@ -253,7 +253,7 @@ fun MediumArticle(
 
 @Composable
 fun MediumArticleShimmer(
-    cornerRadius: RoundedCornerShape = RoundedCornerShape(8.dp),
+    cornerRadius: RoundedCornerShape = RoundedCornerShape(16.dp),
 ) = Row(
     modifier = Modifier
         .clip(cornerRadius)

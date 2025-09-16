@@ -6,16 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
 import dev.fizcode.attendance.core.designsystem.theme.AttendanceTheme
 import dev.fizcode.attendance.navigation.RootNavGraph
+import dev.fizcode.attendance_api.util.ContextFactory
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App() {
+fun App(
+    platformContext: ContextFactory
+) {
     AttendanceTheme {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
             RootNavGraph(
+                platformContext = platformContext,
                 navController = rememberNavController()
             )
         }

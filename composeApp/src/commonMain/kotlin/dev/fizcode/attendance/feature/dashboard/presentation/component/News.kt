@@ -19,6 +19,7 @@ import dev.fizcode.attendance.core.designsystem.component.LargeArticleShimmer
 import dev.fizcode.attendance.core.designsystem.component.SimpleErrorTextButton
 import dev.fizcode.attendance.feature.dashboard.presentation.model.NewsUiModel
 import dev.fizcode.attendance.feature.dashboard.util.DashboardConstant
+import dev.fizcode.attendance.feature.dashboard.util.dummyNews
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -81,7 +82,7 @@ private fun NewsPreview() {
     val context = LocalPlatformContext.current
     val imageLoader = remember { ImageLoader(context) }
     News(
-        news = UiState.Empty,
+        news = UiState.Success(dummyNews),
         onNewsClick = {},
         context = context,
         imageLoader = imageLoader

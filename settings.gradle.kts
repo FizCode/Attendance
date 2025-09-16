@@ -29,3 +29,5 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+include(":feature:attendance-bometrics")
+include(":core:attendance-api")

@@ -64,20 +64,18 @@ private fun RowScope.AddItem(
     selectedIcon: @Composable () -> Unit,
     label: @Composable () -> Unit,
     onClick: () -> Unit
-) {
-    NavigationBarItem(
-        modifier = modifier,
-        selected = selected,
-        onClick = onClick,
-        icon = if (selected) selectedIcon else unselectedIcon,
-        label = label,
-        alwaysShowLabel = alwaysShowLabel,
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MaterialTheme.colorScheme.onPrimary,
-            selectedTextColor = MaterialTheme.colorScheme.primary,
-            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            indicatorColor = MaterialTheme.colorScheme.primary,
-        )
+) = NavigationBarItem(
+    modifier = modifier,
+    selected = selected,
+    onClick = onClick,
+    icon = if (selected) selectedIcon else unselectedIcon,
+    label = label,
+    alwaysShowLabel = alwaysShowLabel,
+    colors = NavigationBarItemDefaults.colors(
+        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+        selectedTextColor = MaterialTheme.colorScheme.primary,
+        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        indicatorColor = MaterialTheme.colorScheme.primary,
     )
-}
+)

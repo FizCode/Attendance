@@ -5,26 +5,34 @@ import androidx.lifecycle.viewModelScope
 import dev.fizcode.attendance.core.common.extension.UiState
 import dev.fizcode.attendance.feature.dashboard.domain.usecase.GetRealtimeClockUseCase
 import dev.fizcode.attendance.feature.dashboard.presentation.mapper.DateTimeMapper.mapToDateTimeUi
+import dev.fizcode.attendance.feature.dashboard.presentation.model.DashboardEvent
+import dev.fizcode.attendance.feature.dashboard.presentation.model.DashboardIntent
 import dev.fizcode.attendance.feature.dashboard.presentation.model.DashboardState
 import dev.fizcode.attendance.feature.dashboard.presentation.model.DateTimeUiModel
 import dev.fizcode.attendance.feature.dashboard.util.dummyArticles
 import dev.fizcode.attendance.feature.dashboard.util.dummyClockStatus
 import dev.fizcode.attendance.feature.dashboard.util.dummyNews
+import dev.fizcode.attendance_api.AttendanceFeature
+import dev.fizcode.attendance_api.model.AttendanceResult
+import dev.fizcode.attendance_api.util.ContextFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class DashboardViewModel(
+    private val attendanceFeature: AttendanceFeature,
     private val useCase: GetRealtimeClockUseCase
 ) : ViewModel() {
 
@@ -45,6 +53,16 @@ internal class DashboardViewModel(
             started = SharingStarted.Eagerly,
             initialValue = DashboardState()
         )
+
+    private val _event = MutableSharedFlow<DashboardEvent>()
+    val event = _event.asSharedFlow()
+
+    fun handleIntent(intent: DashboardIntent) = when (intent) {
+        is DashboardIntent.OnArticleClick -> {}
+        is DashboardIntent.OnNewsClick -> {}
+        is DashboardIntent.ClockIn -> onClickIn(intent.context)
+        is DashboardIntent.ClockOut -> onClickOut(intent.context)
+    }
 
     private suspend fun loadAll() = coroutineScope {
         val clockStatusDeferred = async { loadClockStatus() }
@@ -78,6 +96,32 @@ internal class DashboardViewModel(
         _state.value = _state.value.copy(
             articles = UiState.Success(dummyArticles)
         )
+    }
+
+    private fun onClickIn(context: ContextFactory) = viewModelScope.launch(Dispatchers.IO) {
+        shouldShowBiometrics(context)
+    }
+
+    private fun onClickOut(context: ContextFactory) = viewModelScope.launch(Dispatchers.IO) {
+        shouldShowBiometrics(context)
+    }
+
+    private fun shouldShowBiometrics(context: ContextFactory) = viewModelScope.launch {
+        val biometricResult = attendanceFeature.clockIn(context = context)
+        when (biometricResult) {
+            is AttendanceResult.Success -> {
+                _event.emit(DashboardEvent.BiometricSuccess)
+            }
+
+            is AttendanceResult.Failure -> {
+                _event.emit(DashboardEvent.BiometricFailure(biometricResult.message))
+            }
+
+            is AttendanceResult.NotAvailable -> {
+                _event.emit(DashboardEvent.BiometricNotAvailable)
+            }
+        }
+
     }
 
 }

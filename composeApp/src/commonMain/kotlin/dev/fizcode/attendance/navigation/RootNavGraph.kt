@@ -6,16 +6,20 @@ import androidx.navigation.compose.NavHost
 import dev.fizcode.attendance.core.navigation.routes.RootRoute
 import dev.fizcode.attendance.feature.login.navigation.loginNavGraph
 import dev.fizcode.attendance.feature.toplevel.navigation.topLevelNavGraph
+import dev.fizcode.attendance_api.util.ContextFactory
 
 @Composable
 fun RootNavGraph(
-    navController: NavHostController,
+    platformContext: ContextFactory,
+    navController: NavHostController
 ) {
     NavHost(
         navController = navController,
         startDestination = RootRoute.TopLevelRoute
     ) {
-        topLevelNavGraph()
+        topLevelNavGraph(
+            platformContext = platformContext
+        )
         loginNavGraph()
     }
 }

@@ -1,6 +1,6 @@
 package dev.fizcode.attendance.feature.dashboard.presentation.model
 
-data class NewsUiModel(
+internal data class NewsUiModel(
     val id: Int,
     val thumbnail: String,
     val authorAvatar: String,

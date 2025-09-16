@@ -14,8 +14,8 @@ internal val dummyDateTime = DateTimeUiModel(
 )
 internal val dummyClockStatus = ClockStatusUiModel(
     warning = "",
-    clockedStatus = ClockedStatus.CLOCKED_OUT,
-    clockIn = "08:12",
+    clockedStatus = ClockedStatus.NOT_CLOCKED,
+    clockIn = "08:01",
     clockOut = "18:18",
     overtime = "+1 hour overtime"
 )
