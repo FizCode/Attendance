@@ -51,7 +51,7 @@ interface AttendanceFeature {
      * @param context A [ContextFactory] providing platform-specific context required by the feature.
      * @return An [AttendanceResult] representing the outcome of the clock-in operation.
      */
-    suspend fun clockIn(context: ContextFactory): AttendanceResult
+    suspend fun clockIn(context: ContextFactory): AttendanceResult<*>
 
     /**
      * Handles the clock-out process for attendance.
@@ -59,5 +59,6 @@ interface AttendanceFeature {
      * @param context A [ContextFactory] providing platform-specific context required by the feature.
      * @return An [AttendanceResult] representing the outcome of the clock-out operation.
      */
-    suspend fun clockOut(context: ContextFactory): AttendanceResult
+    suspend fun clockOut(context: ContextFactory): AttendanceResult<*>
+
 }

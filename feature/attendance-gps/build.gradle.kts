@@ -10,7 +10,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
-        namespace = "dev.fizcode.attendance_bometrics"
+        namespace = "dev.fizcode.attendance_gps"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -31,7 +31,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "feature:attendance-bometricsKit"
+    val xcfName = "feature:attendance-gpsKit"
 
     iosX64 {
         binaries.framework {
@@ -60,8 +60,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
-                implementation(libs.kotlinx.coroutines.core)
-
 
                 implementation(projects.core.attendanceApi)
 
@@ -80,8 +78,7 @@ kotlin {
 
         androidMain {
             dependencies {
-                implementation(libs.androidx.core.ktx)
-                implementation(libs.androidx.biometric)
+                implementation(libs.play.services.location)
             }
         }
 
@@ -100,7 +97,6 @@ kotlin {
                 // part of KMP’s default source set hierarchy. Note that this source set depends
                 // on common by default and will correctly pull the iOS artifacts of any
                 // KMP dependencies declared in commonMain.
-                implementation(libs.kotlin.stdlib)
             }
         }
 

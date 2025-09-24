@@ -3,11 +3,14 @@ package dev.fizcode.attendance.feature.dashboard.di
 import dev.fizcode.attendance.feature.dashboard.domain.usecase.GetRealtimeClockUseCase
 import dev.fizcode.attendance.feature.dashboard.presentation.DashboardViewModel
 import dev.fizcode.attendance_api.AttendanceFeature
+import dev.fizcode.attendance_api.AttendanceManager
 import dev.fizcode.attendance_bometrics.AttendanceBiometricsFeature
 import dev.fizcode.attendance_bometrics.di.biometricsModule
-import org.koin.core.module.dsl.singleOf
+import dev.fizcode.attendance_gps.AttendanceGpsFeature
+import dev.fizcode.attendance_gps.di.gpsModule
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
-import org.koin.dsl.bind
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 fun dashboardKoinModule() = module {
@@ -23,10 +26,24 @@ private fun dashboardViewModelModule() = module {
 }
 
 private fun dashboardUseCaseModule() = module {
-    singleOf(::GetRealtimeClockUseCase)
+    factoryOf(::GetRealtimeClockUseCase)
 }
 
 private fun dashboardAttendanceModule() = module {
-    singleOf(::AttendanceBiometricsFeature) bind AttendanceFeature::class
     includes(biometricsModule())
+    includes(gpsModule())
+    single {
+        AttendanceManager(
+            mapOf(
+                "biometrics" to get<AttendanceFeature>(qualifier = named("biometrics")),
+                "gps" to get<AttendanceFeature>(qualifier = named("gps"))
+            )
+        )
+    }
+    factory<AttendanceFeature>(named("biometrics")) {
+        AttendanceBiometricsFeature(get())
+    }
+    single<AttendanceFeature>(named("gps")) {
+        AttendanceGpsFeature(get())
+    }
 }

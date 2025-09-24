@@ -11,13 +11,13 @@ sealed class BiometricResult {
     /**
      * Authentication succeeded and the user has been verified.
      */
-    object Success : BiometricResult()
+    data object Success : BiometricResult()
 
     /**
      * Biometric authentication is not available on the device
      * (e.g., no hardware, no enrolled biometrics, or unsupported OS version).
      */
-    object NotAvailable : BiometricResult()
+    data object NotAvailable : BiometricResult()
 
     /**
      * An unrecoverable error occurred during authentication.
@@ -31,5 +31,5 @@ sealed class BiometricResult {
      * (e.g., wrong fingerprint or face not recognized).
      * The user may retry.
      */
-    object Failed : BiometricResult()
+    data object Failed : BiometricResult()
 }

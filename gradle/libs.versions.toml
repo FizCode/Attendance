@@ -3,7 +3,7 @@ agp = "8.13.0"
 android-compileSdk = "36"
 android-minSdk = "24"
 android-targetSdk = "35"
-androidx-activity = "1.10.1"
+androidx-activity = "1.11.0"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.17.0"
 androidx-espresso = "3.7.0"
@@ -14,12 +14,14 @@ coil = "3.3.0"
 composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 koin = "4.1.1"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
+kotlinxCoroutinesCore = "1.10.2"
 kotlinxDatetime = "0.7.1"
-ktor = "3.2.3"
+ktor = "3.3.0"
 material3adaptive = "1.1.2"
-navigationCompose = "2.9.0-rc01"
-kotlinStdlib = "2.2.10"
+navigationCompose = "2.9.0-rc02"
+kotlinStdlib = "2.2.20"
+playServicesLocation = "21.3.0"
 runner = "1.7.0"
 core = "1.7.0"
 
@@ -41,6 +43,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -51,6 +54,7 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

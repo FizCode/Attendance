@@ -46,6 +46,7 @@ kotlin {
 
             implementation(projects.core.attendanceApi)
             implementation(projects.feature.attendanceBometrics)
+            implementation(projects.feature.attendanceGps)
 
             // Design System Module
             implementation(compose.components.resources)
