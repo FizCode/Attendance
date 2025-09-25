@@ -12,7 +12,7 @@ import dev.fizcode.attendance.feature.dashboard.presentation.model.DateTimeUiMod
 import dev.fizcode.attendance.feature.dashboard.util.dummyArticles
 import dev.fizcode.attendance.feature.dashboard.util.dummyClockStatus
 import dev.fizcode.attendance.feature.dashboard.util.dummyNews
-import dev.fizcode.attendance_api.AttendanceFeature
+import dev.fizcode.attendance_api.AttendanceManager
 import dev.fizcode.attendance_api.model.AttendanceResult
 import dev.fizcode.attendance_api.util.ContextFactory
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +32,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 internal class DashboardViewModel(
-    private val attendanceFeature: AttendanceFeature,
+    private val attendanceManager: AttendanceManager,
     private val useCase: GetRealtimeClockUseCase
 ) : ViewModel() {
 
@@ -107,18 +107,36 @@ internal class DashboardViewModel(
     }
 
     private fun shouldShowBiometrics(context: ContextFactory) = viewModelScope.launch {
-        val biometricResult = attendanceFeature.clockIn(context = context)
-        when (biometricResult) {
-            is AttendanceResult.Success -> {
-                _event.emit(DashboardEvent.BiometricSuccess)
-            }
+        val features = listOf("biometrics", "gps")
+        val biometricResult = attendanceManager.execute(
+            featureIds = features,
+            context = context
+        )
+        biometricResult.forEach { (id, result) ->
+            when (result) {
+                is AttendanceResult.Success -> {
+                    if (id == "biometrics") {
+                        _event.emit(DashboardEvent.BiometricSuccess)
+                    }
+                }
 
-            is AttendanceResult.Failure -> {
-                _event.emit(DashboardEvent.BiometricFailure(biometricResult.message))
-            }
+                is AttendanceResult.Data<*> -> {
+                    if (id == "gps") {
+                        println("Updated GPS Location -> ${result.value}")
+                    }
+                }
 
-            is AttendanceResult.NotAvailable -> {
-                _event.emit(DashboardEvent.BiometricNotAvailable)
+                is AttendanceResult.Failure -> {
+                    if (id == "biometrics") {
+                        _event.emit(DashboardEvent.BiometricFailure(result.message))
+                    }
+                }
+
+                is AttendanceResult.NotAvailable -> {
+                    if (id == "biometrics") {
+                        _event.emit(DashboardEvent.BiometricNotAvailable)
+                    }
+                }
             }
         }
 

@@ -14,22 +14,34 @@ import dev.fizcode.attendance_bometrics.model.BiometricResult
  * (e.g., fingerprint, face recognition) for clock-in and clock-out operations.
  *
  * This feature delegates authentication to a platform-specific [BiometricAuthenticator].
- * If the authentication is successful, the attendance action will be considered successful.
- * Otherwise, a corresponding [AttendanceResult.Failure] is returned with an error message.
+ * If the authentication succeeds, the attendance action is considered successful.
+ * Otherwise, a corresponding failure result is returned:
+ * - [AttendanceResult.NotAvailable] if the device does not support biometric authentication.
+ * - [AttendanceResult.Failure] with an error message if authentication fails or an error occurs.
+ *
+ * The generic type parameter `<T>` is not used in this implementation since biometric
+ * attendance does not produce additional data. All results are effectively
+ * [AttendanceResult]<Nothing>, but casted to [AttendanceResult]<T> for interface compatibility.
  *
  * Example:
  * ```
  * val biometricFeature = AttendanceBiometricsFeature(authenticator)
  * val result = biometricFeature.clockIn(contextFactory)
- * if (result is AttendanceResult.Success) {
- *     // Proceed with clock-in
- * } else {
- *     // Handle failure (e.g., show error to user)
+ * when (result) {
+ *     is AttendanceResult.Success -> {
+ *         // Proceed with clock-in
+ *     }
+ *     is AttendanceResult.NotAvailable -> {
+ *         // Device does not support biometric authentication
+ *     }
+ *     is AttendanceResult.Failure -> {
+ *         // Handle error (e.g., show message to user)
+ *     }
  * }
  * ```
  *
- * @property authenticator A platform-specific [BiometricAuthenticator] that performs
- * biometric authentication.
+ * @property authenticator A platform-specific [BiometricAuthenticator] responsible
+ * for performing biometric authentication.
  */
 class AttendanceBiometricsFeature(
     private val authenticator: BiometricAuthenticator
@@ -47,33 +59,35 @@ class AttendanceBiometricsFeature(
      * @param context A [ContextFactory] that provides platform-specific context
      *                required for biometric authentication.
      * @return [AttendanceResult.Success] if authentication succeeds,
-     *         otherwise [AttendanceResult.Failure] with an error message.
+     *         [AttendanceResult.NotAvailable] if biometrics are not supported,
+     *         or [AttendanceResult.Failure] with an error message if authentication fails.
      */
-    override suspend fun clockIn(context: ContextFactory): AttendanceResult =
+    override suspend fun clockIn(context: ContextFactory): AttendanceResult<*> =
         when (val result = authenticator.authenticate(context = context)) {
-            BiometricResult.Success -> Success
+            is BiometricResult.Success -> Success
 
-            BiometricResult.NotAvailable -> NotAvailable
+            is BiometricResult.NotAvailable -> NotAvailable
 
             is BiometricResult.Error -> {
                 Failure(result.message)
             }
 
-            BiometricResult.Failed -> {
+            is BiometricResult.Failed -> {
                 Failure("Biometric authentication failed")
             }
 
         }
 
     /**
-     * Attempts to perform clock-in using biometric authentication.
+     * Attempts to perform clock-out using biometric authentication.
      *
      * @param context A [ContextFactory] that provides platform-specific context
      *                required for biometric authentication.
      * @return [AttendanceResult.Success] if authentication succeeds,
-     *         otherwise [AttendanceResult.Failure] with an error message.
+     *         [AttendanceResult.NotAvailable] if biometrics are not supported,
+     *         or [AttendanceResult.Failure] with an error message if authentication fails.
      */
-    override suspend fun clockOut(context: ContextFactory): AttendanceResult =
+    override suspend fun clockOut(context: ContextFactory): AttendanceResult<*> =
         when (val result = authenticator.authenticate(context = context)) {
             BiometricResult.Success -> Success
 
