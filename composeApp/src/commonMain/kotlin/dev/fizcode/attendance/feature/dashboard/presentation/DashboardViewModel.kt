@@ -107,7 +107,7 @@ internal class DashboardViewModel(
     }
 
     private fun shouldShowBiometrics(context: ContextFactory) = viewModelScope.launch {
-        val features = listOf("biometrics", "gps")
+        val features = listOf("biometrics", "device_binding" , "gps")
         val biometricResult = attendanceManager.execute(
             featureIds = features,
             context = context
@@ -121,8 +121,9 @@ internal class DashboardViewModel(
                 }
 
                 is AttendanceResult.Data<*> -> {
-                    if (id == "gps") {
-                        println("Updated GPS Location -> ${result.value}")
+                    when (id) {
+                        "device_binding" -> println("Device Id -> ${result.value}")
+                        "gps" -> println("Location -> ${result.value}")
                     }
                 }
 

@@ -33,7 +33,7 @@ import kotlin.coroutines.resume
  * This implementation uses [suspendCancellableCoroutine] to integrate with Kotlin coroutines,
  * ensuring proper cancellation handling.
  */
-actual class BiometricAuthenticator() {
+actual class BiometricAuthenticator {
 
     /**
      * Launches the biometric authentication flow.
