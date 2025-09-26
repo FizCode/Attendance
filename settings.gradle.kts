@@ -29,6 +29,7 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":feature:attendance-bometrics")
 include(":core:attendance-api")
+include(":feature:attendance-bometrics")
+include(":feature:attendance-devicebinding")
 include(":feature:attendance-gps")
