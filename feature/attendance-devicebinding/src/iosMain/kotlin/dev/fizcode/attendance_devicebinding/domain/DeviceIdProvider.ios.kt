@@ -1,7 +1,8 @@
 package dev.fizcode.attendance_devicebinding.domain
 
 import dev.fizcode.attendance_api.util.ContextFactory
-import dev.fizcode.attendance_devicebinding.model.DeviceIdResult
+import dev.fizcode.attendance_devicebinding.model.DeviceInfoModel
+import dev.fizcode.attendance_devicebinding.model.DeviceResult
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
@@ -14,13 +15,21 @@ import platform.Foundation.create
 import platform.Foundation.dataUsingEncoding
 import platform.UIKit.UIDevice
 
-actual class DeviceIdProvider {
-    actual suspend fun getDeviceId(context: ContextFactory): DeviceIdResult<*> {
+actual class DeviceInfoProvider {
+    actual suspend fun getDeviceId(context: ContextFactory): DeviceResult<DeviceInfoModel> {
         val result = UIDevice.currentDevice.identifierForVendor?.UUIDString ?: ""
         return if (result.isBlank()) {
-            DeviceIdResult.Error("Device ID not found")
+            DeviceResult.Error("Device ID not found")
         } else {
-            DeviceIdResult.Success(sha256(result))
+            DeviceResult.Success(
+                DeviceInfoModel(
+                    deviceId = sha256(result),
+                    platform = UIDevice.currentDevice.systemName,
+                    manufacturer = "Apple",
+                    model = UIDevice.currentDevice.model,
+                    osVersion = UIDevice.currentDevice.systemVersion
+                )
+            )
         }
     }
 
