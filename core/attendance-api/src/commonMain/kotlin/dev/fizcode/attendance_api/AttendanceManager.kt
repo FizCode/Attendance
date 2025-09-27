@@ -11,6 +11,7 @@ class AttendanceManager(
         context: ContextFactory
     ): Map<String, AttendanceResult<*>> {
         return featureIds.associateWith { id ->
+            println("Executing features: $id")
             features[id]?.clockIn(context)
                 ?: AttendanceResult.Failure("Feature $id not found")
         }

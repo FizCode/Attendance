@@ -22,7 +22,6 @@ actual class DeviceInfoProvider {
                 val result = if (androidId.isNullOrBlank()) {
                     DeviceResult.Error("Android ID not found")
                 } else {
-                    println("Android Device: ${android.os.Build.DEVICE}")
                     DeviceResult.Success(
                         DeviceInfoModel(
                             deviceId = sha256(androidId),

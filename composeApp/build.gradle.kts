@@ -48,6 +48,7 @@ kotlin {
             implementation(projects.feature.attendanceBometrics)
             implementation(projects.feature.attendanceDevicebinding)
             implementation(projects.feature.attendanceGps)
+            implementation(projects.feature.attendanceWifi)
 
             // Design System Module
             implementation(compose.components.resources)

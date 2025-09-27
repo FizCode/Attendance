@@ -10,6 +10,8 @@ import dev.fizcode.attendance_devicebinding.AttendanceDeviceBindingFeature
 import dev.fizcode.attendance_devicebinding.di.deviceBindingModule
 import dev.fizcode.attendance_gps.AttendanceGpsFeature
 import dev.fizcode.attendance_gps.di.gpsModule
+import dev.fizcode.attendance_wifi.AttendanceWifiFeature
+import dev.fizcode.attendance_wifi.di.wifiModule
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.core.qualifier.named
@@ -35,12 +37,14 @@ private fun dashboardAttendanceModule() = module {
     includes(biometricsModule())
     includes(deviceBindingModule())
     includes(gpsModule())
+    includes(wifiModule())
     single {
         AttendanceManager(
             mapOf(
                 "biometrics" to get<AttendanceFeature>(qualifier = named("biometrics")),
                 "device_binding" to get<AttendanceFeature>(qualifier = named("device_binding")),
-                "gps" to get<AttendanceFeature>(qualifier = named("gps"))
+                "gps" to get<AttendanceFeature>(qualifier = named("gps")),
+                "wifi" to get<AttendanceFeature>(qualifier = named("wifi"))
             )
         )
     }
@@ -52,5 +56,8 @@ private fun dashboardAttendanceModule() = module {
     }
     single<AttendanceFeature>(named("gps")) {
         AttendanceGpsFeature(get())
+    }
+    factory<AttendanceFeature>(named("wifi")) {
+        AttendanceWifiFeature(get())
     }
 }
